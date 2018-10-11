@@ -21,3 +21,10 @@
 # （6）将个人分支推动到远程仓库中
     git push origin '个人分支名称'
   这时远程仓库就多了一个‘个人分支’。
+
+ 开始项目：
+ 1、本次项目使用stylus预编译器，编译成css语句，利用的是webpack这个工具，但是webpack不认识stylus，所以需要借助stylus-loader
+ 这个库，使webpack可以识别stylus语句。另外，因为webstorm不能识别stylus语句，所以需要在style标签上声明，使用的语句是stylus，
+ 故<style lang="stylus" rel="stylesheet/stylus"></style>;下载依赖：npm install stylus stylus-loader --save-dev
+ 2、创建相关文件夹：api（关于发送ajax请求的，其中包含两个文件：）
+
