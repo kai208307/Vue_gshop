@@ -17,8 +17,6 @@ export default {
   mounted(){
     //获取adress，保存到state中
     this.$store.dispatch('getAdress')
-    //获取user，保存到state中
-    this.$store.dispatch('getUser')
   },
   components:{
     FooterGuide

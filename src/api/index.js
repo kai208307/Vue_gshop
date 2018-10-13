@@ -10,3 +10,13 @@ export const reqAddress = geohash => ajax('/api/position/' + geohash)
 export const reqFoodsCategory = ()=> ajax('/api/index_category')
 //3、根据经纬度获取商铺列表
 export const reqShop = ({longitude,latitude})=> ajax('/api/shops',{longitude,latitude})
+//4、获取短信验证码
+export const reqSendCode = phone=> ajax('/api/sendcode',{phone})
+//5、手机号验证码登陆
+export const reqSmsLogin = (phone,code)=> ajax('/api/login_sms',{phone,code},'POST')
+//6、密码登录
+export const reqPwdLogin = ({name,pwd,captcha}) => ajax('/api/login_pwd',{name,pwd,captcha},'POST')
+//7、根据会话获取用户信息
+export const reqUser = ()=> ajax('/api/userinfo')
+//8、退出登录
+export const reqLogout = ()=> ajax('/api/logout')

@@ -12,11 +12,11 @@
           <form>
             <div :class="{on:isLogin}" >
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="手机号" v-model="phone">
-                <button :disabled="computedTime>0 || !phone" class="get_verification" :class="{right_phone_number: isRightNumber}" @click.prevent="sendCode">{{computedTime>0 ? `已发送(${computedTime}s)` : '获取验证码'}}</button>
+                <input type="tel" maxlength="11" placeholder="手机号" v-model="phoneNumber">
+                <button :disabled="computedTime>0 || !phoneNumber" class="get_verification" :class="{right_phone_number: isRightNumber}" @click="sendCode">{{computedTime>0 ? `已发送(${computedTime}s)` : '获取验证码'}}</button>
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
+                <input type="tel" maxlength="8" placeholder="验证码">
               </section>
               <section class="login_hint">
                 温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -26,22 +26,22 @@
             <div :class="{on:!isLogin}">
               <section>
                 <section class="login_message">
-                  <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
+                  <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
                 </section>
                 <section class="login_verification">
-                  <input :type="isShowPwd ? 'text' : 'password'" maxlength="8" placeholder="密码" v-model="pwd">
+                  <input :type="isShowPwd ? 'text' : 'password'" maxlength="8" placeholder="密码">
                   <div class="switch_button" :class="isShowPwd ? 'on' : 'off'" @click="isShowPwd = !isShowPwd">
                     <div class="switch_circle" :class="{right:isShowPwd}"></div>
                     <span class="switch_text">{{isShowPwd ? 'abc' : ''}}</span>
                   </div>
                 </section>
                 <section class="login_message">
-                  <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                  <img class="get_verification" ref="captcha" src="http://localhost:4000/captcha" alt="captcha" @click="updateCaptcha">
+                  <input type="text" maxlength="11" placeholder="验证码">
+                  <img class="get_verification" src="./images/captcha.svg" alt="captcha">
                 </section>
               </section>
             </div>
-            <button class="login_submit" @click.prevent="login">登录</button>
+            <button class="login_submit">登录</button>
           </form>
           <a href="javascript:;" class="about_us">关于我们</a>
         </div>
@@ -52,28 +52,22 @@
     </section>
 </template>
 <script>
-  import {Toast,MessageBox} from 'mint-ui'
-  import {reqSendCode,reqSmsLogin,reqPwdLogin} from '../../api/index'
   export default {
     data(){
       return {
         isLogin: true, //有这个标识的话，就添加on
-        phone: '', //初始化的手机号
-        code: '',//验证码
-        name: '',//用户名
-        pwd: '',//密码
-        captcha: '',//图形验证码
+        phoneNumber: '', //初始化的手机号
         computedTime: 0, //初始化倒计时时间为0
-        isShowPwd: false,  //初始化不显示密码
+        isShowPwd: false  //初始化不显示密码
       }
     },
     computed:{
       isRightNumber(){
-        return /^1\d{10}$/.test(this.phone)
+        return /^1\d{10}$/.test(this.phoneNumber)
       }
     },
     methods:{
-      async sendCode(){
+      sendCode(){
         this.computedTime = 5
         const intervalId = setInterval(()=>{
           this.computedTime--
@@ -82,72 +76,6 @@
             clearInterval(intervalId)
           }
         },1000)
-        //发送请求:发送短信验证码
-        const {phone} = this
-        const result = await reqSendCode(phone)
-        if (result.code === 0){
-          //成功
-          // alert('验证码发送成功')
-          Toast('验证码发送成功')
-        } else{
-          //失败
-          // alert('短信验证码发送失败')
-          this.computedTime = 0 //清除定时器
-          MessageBox.alert(result.msg).then(action => {
-            console.log('验证码发送失败');
-          });
-        }
-      },
-      //更新验证码，不通过发送ajax请求更新，直接每次重新指定src更新
-      updateCaptcha(event) {
-        //获取到src，两种方法，一种是event.target，另一种是ref属性
-        // event.target.src = 'http://localhost:4000/captcha?time' + Date.now()  //event.target中欧src属性，重新赋值，但需要添加一个时间戳，告诉浏览器需要发生改变了
-        this.$refs.captcha.src = 'http://localhost:4000/captcha?time' + Date.now()  //refs属性方法，同样需要时间戳，告诉浏览器需要更新了
-      },
-      //请求登录
-      async login(){
-        let result
-        if (this.isLogin){  //短信登录
-          const {phone,code} = this
-          //前台表单验证
-          if (!this.isRightNumber){
-            return MessageBox.alert('请输入正确的手机号')
-          } else if(!/^\d{6}$/.test(code)){
-            return MessageBox.alert('请输入正确的短信验证码')
-          }
-          //发送请求
-          result = await reqSmsLogin(phone,code)
-        } else{ //密码登录
-          const {name,pwd,captcha} = this
-          //前台表单验证
-            if (!name){
-            return MessageBox.alert('请输入正确的用户名')
-          } else if(!pwd) {
-              return MessageBox.alert('请输入正确的密码')
-          }else if(!/^.{4}$/.test(captcha)){
-              return MessageBox.alert('请输入正确的验证码')
-          }
-            //发送密码登录请求
-          result = await reqPwdLogin({name,pwd,captcha})
-        }
-        //发送请求之后，清除定时器
-        this.computedTime = 0
-        //发送请求之后，更新图形验证码
-        this.updateCaptcha()
-        //图形验证码清空
-        this.captcha = ''
-        //根据请求结果进行相应的处理
-        if(result.code === 0){
-          //请求成功,将user信息保存到state中
-          const user = result.data
-          console.log(user);
-          this.$store.dispatch('saveUser',user)
-          //跳转到个人中心页面
-          this.$router.replace('/profile')
-        }else{
-          //请求失败
-           MessageBox.alert(result.msg)
-        }
       }
     }
   }

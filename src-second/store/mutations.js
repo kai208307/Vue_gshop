@@ -5,9 +5,7 @@
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
-  RECEIVE_SHOPS,
-  RECEIVE_USER,
-  RESET_USER
+  RECEIVE_SHOPS
 } from './mutation-types'
 //发送请求
 export default {
@@ -20,11 +18,5 @@ export default {
   },
   [RECEIVE_SHOPS](state,{shops}){
     state.shops = shops
-  },
-  [RECEIVE_USER](state,{user}){
-    state.user = user
-  },
-  [RESET_USER](state){
-    state.user = {}
   }
 }

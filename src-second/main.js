@@ -2,8 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import {Button} from 'mint-ui'
-
 
 import router from './router/index'
 import store from './store/index'
@@ -14,7 +12,6 @@ import 'swiper/dist/css/swiper.min.css'
 
 //注册全局组件
 Vue.component('TopHeader',TopHeader)
-Vue.component(Button.name,Button)
 
 
 /* eslint-disable no-new */
