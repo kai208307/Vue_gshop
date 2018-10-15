@@ -8,4 +8,7 @@ export default {
   categorys: [],//食品分类列表
   shops: [],//商家列表
   user: {},//用户名
+  goods: [],//点餐
+  ratings: [],//评价信息
+  info: {},//商家信息
 }

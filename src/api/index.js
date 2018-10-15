@@ -20,3 +20,11 @@ export const reqPwdLogin = ({name,pwd,captcha}) => ajax('/api/login_pwd',{name,p
 export const reqUser = ()=> ajax('/api/userinfo')
 //8、退出登录
 export const reqLogout = ()=> ajax('/api/logout')
+//9、获取商家商品分类数组
+export const reqGoods = () => ajax('/shopgoods')
+//10、获取商家评论信息
+export const reqRatings = () => ajax('/shopratings')
+//11、获取商家信息
+export const reqInfo = () => ajax('/shopinfo')
+
+

@@ -6,7 +6,10 @@ import {
   reqFoodsCategory,
   reqShop,
   reqUser,
-  reqLogout
+  reqLogout,
+  reqGoods,
+  reqRatings,
+  reqInfo
 } from '../api/index'
 
 import {
@@ -14,7 +17,10 @@ import {
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
   RECEIVE_USER,
-  RESET_USER
+  RESET_USER,
+  RECEIVE_GOODS,
+  RECEIVE_RATINGS,
+  RECEIVE_INFO
 } from './mutation-types'
 
 export default {
@@ -67,6 +73,30 @@ export default {
     const result = await reqLogout()
     if (result.code === 0){
       commit(RESET_USER)
+    }
+  },
+  //异步获取点餐信息,goods数据
+  async getGoods({commit},cb) {
+    const result = await reqGoods()
+    if (result.code === 0){
+      const goods = result.data
+      commit(RECEIVE_GOODS,{goods})
+      typeof cb === 'function' && cb()
+    }
+  },
+  //异步获取评价信息
+  async getRatings({commit}) {
+    const result = await reqRatings()
+    if (result.code === 0){
+      const ratings = result.data
+      commit(RECEIVE_RATINGS,{ratings})
+    }
+  },
+  async getInfo({commit}) {
+    const result = await reqInfo()
+    if (result.code === 0){
+      const info = result.data
+      commit(RECEIVE_INFO,{info})
     }
   }
 }

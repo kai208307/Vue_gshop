@@ -11,6 +11,8 @@ import TopHeader from './components/TopHeader/TopHeader'
 
 //引入swiper库中相关的样式文件
 import 'swiper/dist/css/swiper.min.css'
+//引入mock，在入口文件中需要找到数据，才能分发action进行获取
+import './mock/mockServer'
 
 //注册全局组件
 Vue.component('TopHeader',TopHeader)
