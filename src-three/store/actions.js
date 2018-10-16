@@ -20,10 +20,7 @@ import {
   RESET_USER,
   RECEIVE_GOODS,
   RECEIVE_RATINGS,
-  RECEIVE_INFO,
-  INCREATE_CART_COUNT,
-  DECREATE_CART_COUNT,
-  CLEAR_CART
+  RECEIVE_INFO
 } from './mutation-types'
 
 export default {
@@ -95,26 +92,11 @@ export default {
       commit(RECEIVE_RATINGS,{ratings})
     }
   },
-  //获取店铺信息
   async getInfo({commit}) {
     const result = await reqInfo()
     if (result.code === 0){
       const info = result.data
       commit(RECEIVE_INFO,{info})
     }
-  },
-  //获取购物车信息
-  updateCartCount ({commit},{isAdd,food}){
-    if (isAdd){
-      //增加
-      commit(INCREATE_CART_COUNT,{food})
-    } else{
-      //减少
-      commit(DECREATE_CART_COUNT,{food})
-    }
-  },
-  //清空购物车
-  clearCart({commit}){
-    commit(CLEAR_CART)
   }
 }

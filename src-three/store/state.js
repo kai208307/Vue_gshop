@@ -11,5 +11,4 @@ export default {
   goods: [],//点餐
   ratings: [],//评价信息
   info: {},//商家信息
-  cartFoods: [],//购物车
 }

@@ -18,9 +18,7 @@
           <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px"
-                  v-for="(food, index) in good.foods" :key="index"
-                  @click="showFood(food)">
+              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index">
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon">
                 </div>
@@ -35,7 +33,7 @@
                     <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    <CartControl :food="food"/>
+                    CartControl组件
                   </div>
                 </div>
               </li>
@@ -43,9 +41,7 @@
           </li>
         </ul>
       </div>
-      <ShopCart/>
     </div>
-    <Food :food="food" ref="food"/>
   </div>
 </template>
 <script>
@@ -65,21 +61,14 @@
 
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
-
-  import Food from '../../../components/Food/Food'
-  import ShopCart from '../../../components/ShopCart/ShopCart'
   export default {
     data() {
       return {
         scrollY: 0, // 右侧列表Y轴方向滑动的坐标
         tops: [], // 右侧分类li的top值组成的数据
-        food: {}
       }
     },
-    components: {
-      Food,
-      ShopCart
-    },
+
     computed: {
       ...mapState(['goods']),
 
@@ -169,13 +158,6 @@
         this.scrollY = -y
         // 让右侧列表滚动到此处
         this.rightScroll.scrollTo(0, y, 300)
-      },
-
-      showFood(food){
-        //更新food数据
-        this.food = food
-        //父组件调用子组件中定义的方法,用ref属性
-        this.$refs.food.toggleShow()
       }
     }
   }
@@ -186,7 +168,7 @@
   .goods
     display: flex
     position: absolute
-    top: 250px
+    top: 195px
     bottom: 46px
     width: 100%
     background: #fff;

@@ -1,7 +1,6 @@
 /*
 * 包含n个用于直接更新状态数据方法的对象
 * */
-import Vue from 'vue'
 //首先引入mutation-type
 import {
   RECEIVE_ADDRESS,
@@ -11,10 +10,7 @@ import {
   RESET_USER,
   RECEIVE_GOODS,
   RECEIVE_RATINGS,
-  RECEIVE_INFO,
-  INCREATE_CART_COUNT,
-  DECREATE_CART_COUNT,
-  CLEAR_CART
+  RECEIVE_INFO
 } from './mutation-types'
 //发送请求
 export default {
@@ -42,29 +38,5 @@ export default {
   },
   [RECEIVE_INFO](state,{info}){
     state.info = info
-  },
-  [INCREATE_CART_COUNT](state,{food}){
-    if (food.count){  //count有值即大于0
-      food.count++
-    }else { //count无值，即等于0
-      // food.count = 1
-      Vue.set(food, 'count' ,1)//新添加的属性，需要进行数据绑定，利用Vue.set方法
-      //将food信息push到购物车中
-      state.cartFoods.push(food)
-    }
-  },
-  [DECREATE_CART_COUNT](state,{food}){
-    if (food.count){
-      food.count--
-      if (food.count === 0){
-        //将数组清空
-        state.cartFoods.splice(state.cartFoods.indexOf(food),1)
-      }
-    }
-  },
-  //清空购物车
-  [CLEAR_CART](state){
-    state.cartFoods.forEach(food => food.count = 0)
-    state.cartFoods = []
   }
 }
