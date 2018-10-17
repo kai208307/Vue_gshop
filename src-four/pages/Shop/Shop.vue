@@ -3,7 +3,7 @@
     <ShopHeader/>
     <div class="tab">
       <div class="tab-item">
-        <router-link to="/shop/shopgoods" replace>点餐</router-link><!--replace的作用是，点击跳转的时候，可以直接跳转到MSite界面-->
+        <router-link to="/shop/shopgoods" replace>点餐</router-link>
       </div>
       <div class="tab-item">
         <router-link to="/shop/shopratings" replace>评价</router-link>
@@ -12,9 +12,7 @@
         <router-link to="/shop/shopinfo" replace>商家</router-link>
       </div>
     </div>
-    <keep-alive>  <!--为了解决路由缓存的问题-->
-      <router-view/>
-    </keep-alive>
+    <router-view/>
   </div>
 </template>
 <script>
